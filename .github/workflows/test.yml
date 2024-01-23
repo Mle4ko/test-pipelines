@@ -6,7 +6,7 @@ on:
     workflow_dispatch:
       inputs:
         rs-create-watcher:
-          description: 'Select "true" to build (default is "false")'
+          description: 'rs-create-watcher (Select "true" to build)'
           required: true
           default: 'false'
           type: choice
@@ -14,7 +14,7 @@ on:
             - 'true'
             - 'false'
         ms-notification-decode:
-          description: 'Select "true" to build (default is "false")'
+          description: 'ms-notification-decode (Select "true" to build)'
           required: true
           default: 'false'
           type: choice

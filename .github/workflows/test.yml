@@ -32,7 +32,7 @@ jobs:
             id: build-functions
             run: |
               set -e
-              declare -a build_functions
+              declare -A build_functions
               build_functions["rs-create-watcher"]=${{ github.event.inputs.rs-create-watcher }}
               build_functions["ms-notification-decode"]=${{ github.event.inputs.ms-notification-decode }}
               for key in "${!build_functions[@]}"; do

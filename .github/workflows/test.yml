@@ -35,7 +35,7 @@ jobs:
               declare -a build_functions
               build_functions["rs-create-watcher"]=${{ github.event.inputs.rs-create-watcher }}
               build_functions["ms-notification-decode"]=${{ github.event.inputs.ms-notification-decode }}
-              for key in "${!build_functions[@]}"; do 
+              for key in "${!build_functions[@]}"; do
                 value="${build_functions[key]}"
                 echo -e "\nFunctions to build and deploy:\n"
                 echo "$key ===> $value
@@ -46,13 +46,3 @@ jobs:
                   echo "Initiating command with gcloud - gcloud functions deploy $key --source=gs://test-test-gcf-${key}/{$key}.zip --gen2 --region=europe-west2"
                 fi
               done
-              
-              if [[ ${{ github.event.inputs.functions_to_deploy }} == 'all' ]]; then
-                cd $RS-CREATE-WATCHER-WORKDIR || echo -e "\n[ERROR] Failed to cd into $RS-CREATE-WATCHER-WORKDIR\n"
-                zip rs-create-watcher.zip *
-                echo -e "\nListing contents of source code zip:\n"
-                unzip -l rs-create-watcher.zip
-              else
-                cd python/functions
-                make build-${{ github.event.inputs.functions_to_deploy }}
-              fi

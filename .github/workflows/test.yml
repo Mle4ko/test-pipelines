@@ -36,7 +36,7 @@ jobs:
               build_functions["rs-create-watcher"]=${{ github.event.inputs.rs-create-watcher }}
               build_functions["ms-notification-decode"]=${{ github.event.inputs.ms-notification-decode }}
               for key in "${!build_functions[@]}"; do
-                value="${build_functions[key]}"
+                value="${build_functions[$key]}"
                 echo -e "\nFunctions to build and deploy:\n"
                 echo "$key ===> $value"
                 if [[ $value == 'true' ]]; then

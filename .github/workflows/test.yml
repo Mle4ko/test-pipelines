@@ -43,7 +43,7 @@ jobs:
                   echo -e "\nProceeding to build $key!"
                   echo "Changing dir to python/${key}!"
                   echo "zipping contents of $key!"
-                  echo "Initiating command with gcloud - gcloud functions deploy $key --source=gs://test-test-gcf-${key}/{$key}.zip --gen2 --region=europe-west2"
-                  echo "[INFO] Done with $key!"
+                  echo "Initiating command with gcloud - gcloud functions deploy $key --source=gs://test-test-gcf-${key}/${key}.zip --gen2 --region=europe-west2"
+                  echo -e "[INFO] Done with $key!\n\n"
                 fi
               done

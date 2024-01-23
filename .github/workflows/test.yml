@@ -38,10 +38,10 @@ jobs:
               for key in "${!build_functions[@]}"; do
                 value="${build_functions[key]}"
                 echo -e "\nFunctions to build and deploy:\n"
-                echo "$key ===> $value
+                echo "$key ===> $value"
                 if [[ $value == 'true' ]]; then
                   echo -e "\nProceeding to build $key!"
-                  echo "Changing dir to python/{$key}!"
+                  echo "Changing dir to python/${key}!"
                   echo "zipping contents of $key!"
                   echo "Initiating command with gcloud - gcloud functions deploy $key --source=gs://test-test-gcf-${key}/{$key}.zip --gen2 --region=europe-west2"
                 fi

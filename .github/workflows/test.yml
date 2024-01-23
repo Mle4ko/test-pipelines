@@ -39,7 +39,7 @@ jobs:
                 value="${build_functions[key]}"
                 echo -e "\nFunctions to build and deploy:\n"
                 echo "$key ===> $value
-                if [[ $value='true' ]]; then
+                if [[ $value == 'true' ]]; then
                   echo -e "\nProceeding to build $key!"
                   echo "Changing dir to python/{$key}!"
                   echo "zipping contents of $key!"

@@ -22,6 +22,15 @@ on:
             - 'true'
             - 'false'
 jobs:
+
+  test-job:
+      runs-on: ubuntu-latest
+      steps:
+          run: |
+              set -e
+              set -x
+              echo "test"
+            
   deploy-cf-to-canary:
         runs-on: ubuntu-latest
         # env:

@@ -22,15 +22,6 @@ on:
             - 'true'
             - 'false'
 jobs:
-
-  test-job:
-      runs-on: ubuntu-latest
-      steps:
-          run: |
-              set -e
-              set -x
-              echo "test"
-            
   deploy-cf-to-canary:
         runs-on: ubuntu-latest
         env:
@@ -40,7 +31,6 @@ jobs:
           - name: Build Functions
             id: build-functions
             run: |
-              set -easdsadsadsadsadasd
               declare -A build_functions
               build_functions["rs-create-watcher"]=${{ github.event.inputs.rs-create-watcher }}
               build_functions["ms-notification-decode"]=${{ github.event.inputs.ms-notification-decode }}

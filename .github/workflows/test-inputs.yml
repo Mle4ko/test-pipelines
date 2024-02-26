@@ -22,4 +22,13 @@ jobs:
           - name: Show Action
             run: |
               echo "This is the action: $ACTION"
+          - name: Show Deploy
+            if: $ACTION == 'Deploy'
+            run: |
+              echo "Action is DEPLOY!"
+          - name: Show Destroy
+            if: $ACTION == 'Destroy'
+            run: |
+              echo "Action is DESTROY!"
+            
         

@@ -3,11 +3,15 @@ defaults:
         shell: bash
 
 on:
+    push:
+        branches:
+          - main
     workflow_dispatch:
       inputs:
         Action:
           description: 'rs-create-watcher (Select "true" to build)'
           required: true
+          default: 'Destroy'
           type: choice
           options:
             - 'Deploy'

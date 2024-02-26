@@ -1,0 +1,25 @@
+defaults:
+    run:
+        shell: bash
+
+on:
+    workflow_dispatch:
+      inputs:
+        Action:
+          description: 'rs-create-watcher (Select "true" to build)'
+          required: true
+          type: choice
+          options:
+            - 'Deploy'
+            - 'Destroy'
+
+jobs:
+  get-inputs:
+        runs-on: ubuntu-latest
+        env:
+          ACTION: ${{ github.event.inputs.Action }}
+        steps:
+          - name: Show Action
+            run: |
+              echo "This is the action: $ACTION"
+        

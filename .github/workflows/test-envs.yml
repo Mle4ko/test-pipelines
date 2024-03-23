@@ -9,14 +9,6 @@ defaults:
 on:
     workflow_dispatch:
       inputs:
-        Action:
-          description: 'rs-create-watcher (Select "true" to build)'
-          required: true
-          default: 'Destroy'
-          type: choice
-          options:
-            - 'Deploy'
-            - 'Destroy'
         environment:
           description: 'Select environment'
           required: true
@@ -30,7 +22,8 @@ on:
 jobs:
   get-inputs:
         runs-on: ubuntu-latest
-        environment: ${{ github.event.inputs.environment }}
+        environment: 
+            name: ${{ github.event.inputs.environment }}
         env:
           ACTION: ${{ github.event.inputs.Action }}
           RC_DIR: ${{ vars.RC_DIR }}

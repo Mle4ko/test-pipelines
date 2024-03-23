@@ -1,0 +1,54 @@
+env:
+    TEST: ${{ secrets.SECRET }}
+    TEST2: "https://mystringwithsecretthisone${TEST}"
+
+defaults:
+    run:
+        shell: bash
+
+on:
+    workflow_dispatch:
+      inputs:
+        Action:
+          description: 'rs-create-watcher (Select "true" to build)'
+          required: true
+          default: 'Destroy'
+          type: choice
+          options:
+            - 'Deploy'
+            - 'Destroy'
+        environment:
+          description: 'Select environment'
+          required: true
+          type: choice
+          options:
+            - 'rc1'
+            - 'rc2'
+            - 'rc3'
+            - 'rc4'
+
+jobs:
+  get-inputs:
+        runs-on: ubuntu-latest
+        environment: ${{ github.event.inputs.environment }}
+        env:
+          ACTION: ${{ github.event.inputs.Action }}
+          RC_DIR: ${{ vars.RC_DIR }}
+          RC_CMD: ${{ secrets.RC_CMD }}
+        steps:
+          - name: Show Test
+            run: |
+              echo "Showing the result: $TEST2"
+              mkdir rc_dir rc_cmd
+              touch rc_dir/file{1..3}
+              touch rc_cmd/file{4..6}
+              pwd
+          - name: Show vars and secrets
+            run: |
+              echo -e "\nShowing vars/secrets:\nRC_DIR -------> $RC_DIR\nRC_CMD ----------> $RC_CMD"
+              ls -la $RC_DIR
+              echo "-------------------------------------"
+              ls -la $RC_CMD
+              
+    
+        

@@ -20,7 +20,8 @@ on:
             - 'rc4'
 
 jobs:
-  get-inputs:
+  deploy:
+        name: Deploy to ${{ github.event.inputs.environment }} environment
         runs-on: ubuntu-latest
         environment: 
             name: ${{ github.event.inputs.environment }}
@@ -37,7 +38,7 @@ jobs:
               touch rc_cmd/file{4..6}
               pwd
 
-          - name: Deploying to ${{ github.event.inputs.environment }} environment
+          - name: Show ${{ jobs.deploy.environment.name }} environment vars/secrets
             run: |
               echo -e "\nShowing vars/secrets:\nRC_DIR -------> $RC_DIR\nRC_CMD ----------> $RC_CMD"
               ls -la $RC_DIR

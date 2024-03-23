@@ -36,10 +36,8 @@ jobs:
               touch rc_dir/file{1..3}
               touch rc_cmd/file{4..6}
               pwd
-          - name: Show vars and secrets
-            run: echo "Deploying to ${{ github.event.inputs.environment }} environment"
-              
-          - name: Show vars and secrets
+
+          - name: Deploying to ${{ github.event.inputs.environment }} environment
             run: |
               echo -e "\nShowing vars/secrets:\nRC_DIR -------> $RC_DIR\nRC_CMD ----------> $RC_CMD"
               ls -la $RC_DIR

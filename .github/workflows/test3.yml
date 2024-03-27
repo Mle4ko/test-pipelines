@@ -36,7 +36,9 @@ jobs:
         "backup_file": "20240226-133024-workplace.tar.gz"
         }' > test.json
         test3=$(jq -r '.backup_file' test.json)
-        echo "test=$test3" >> "$GITHUB_OUTPUT"
+        if true; then
+          echo "test=$test3" >> "$GITHUB_OUTPUT"
+        fi
     - id: step2
       run: echo "test=world" >> "$GITHUB_OUTPUT"
   job2:

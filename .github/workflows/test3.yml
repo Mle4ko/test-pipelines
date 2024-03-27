@@ -45,4 +45,4 @@ jobs:
     env:
       backup_file: ${{needs.job1.outputs.output1}}
     steps:
-    - run: echo $backup_file ${{needs.job1.outputs.output2}}
+    - run: echo ${{ env.backup_file }} ${{needs.job1.outputs.output2}}

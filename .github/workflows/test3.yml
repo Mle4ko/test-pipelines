@@ -35,7 +35,7 @@ jobs:
         "messages": "will do the backup on workplace - EU,AU - 6225c3d21fbe4d07b2f55fc4\nuploading gs://dev-datalake-eu/20240226-133024-workplace.tar.gz\nbackup complete\n20240226-133024-workplace.tar.gz\n",
         "backup_file": "20240226-133024-workplace.tar.gz"
         }' > test.json
-        test3=(jq -r '.backup_file' test.json)
+        test3=$(jq -r '.backup_file' test.json)
         echo "test=$test3" >> "$GITHUB_OUTPUT"
     - id: step2
       run: echo "test=world" >> "$GITHUB_OUTPUT"

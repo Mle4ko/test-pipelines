@@ -71,10 +71,7 @@ jobs:
           run: |
               set -e
               echo "INFO: BUILD_FUNCTIONS: ${BUILD_FUNCTIONS[@]}"
-              echo "INFO: BUILD_FUNCTIONS: ${{ env.BUILD_FUNCTIONS }}"
-              echo "INFO: ${{ steps.list-functions.outputs.build_functions }}"
-              echo "INFO: ${{ steps.list-functions.outputs.* }}"
-              echo "INFO: $build_functions"
+      
 
               echo -e "\n[INFO]: Building function packages..."
               for func in ${BUILD_FUNCTIONS[@]}; do

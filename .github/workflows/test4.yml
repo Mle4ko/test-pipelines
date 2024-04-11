@@ -1,0 +1,81 @@
+env:
+    TEST: ${{ secrets.SECRET }}
+    TEST2: "https://mystringwithsecretthisone${TEST}"
+
+defaults:
+    run:
+        shell: bash
+
+on:
+    workflow_dispatch:
+      inputs:
+        rs-create-watcher:
+          description: 'rs-create-watcher (Select "true" to build)'
+          required: true
+          default: 'false'
+          type: choice
+          options:
+            - 'true'
+            - 'false'
+        ms-notification-decode:
+          description: 'ms-notification-decode (Select "true" to build)'
+          required: true
+          default: 'false'
+          type: choice
+          options:
+            - 'true'
+            - 'false'
+        rs-receive-notification:
+          description: 'rs-receive-notification (Select "true" to build)'
+          required: true
+          default: 'false'
+          type: choice
+          options:
+            - 'true'
+            - 'false'
+
+jobs:
+  deploy:
+        name: Deploy to see
+        runs-on: ubuntu-latest
+        steps:
+        - name: List functions for build
+          id: list-functions
+          run: |
+              set -e
+              functions_to_build=()
+              declare -A function_inputs
+              function_inputs["rs-create-watcher"]=${{ github.event.inputs.rs-create-watcher }}
+              function_inputs["ms-notification-decode"]=${{ github.event.inputs.ms-notification-decode }}
+              function_inputs["rs-receive-notification"]=${{ github.event.inputs.rs-receive-notification }}
+              echo -e "\Checking function inputs:\n"
+              for key in "${!function_inputs[@]}"; do
+                value="${function_inputs[$key]}"
+                echo -e "\n\n$key ===> $value"
+                if [[ $value == 'true' ]]; then
+                  functions_to_build+=("$key")
+                fi
+              done
+              if [[ -z "${functions_to_build[@]}" ]]; then
+                echo -e "\n[ERROR]: No functions were selected during deployment! Exiting!"
+                exit 1
+              else
+                echo -e "\n[INFO]: These functions will be built:\n${functions_to_build[@]}"
+                echo "export build_functions=(${functions_to_build[@]})" >> GITHUB_OUTPUT
+              fi
+
+        - name: Build packages
+          id: build-packages
+          env:
+            BUILD_FUNCTIONS: ${{ steps.list-functions.outputs.build_functions }}
+          run: |
+              set -e
+              echo "INFO: BUILD_FUNCTIONS: ${BUILD_FUNCTIONS[@]}"
+              echo "INFO: BUILD_FUNCTIONS: ${{ env.BUILD_FUNCTIONS }}"
+
+              echo -e "\n[INFO]: Building function packages..."
+              for func in ${BUILD_FUNCTIONS[@]}; do
+                func="functions-${func}"
+                echo -e "\n[INFO]: Successfully built ${func}!"
+              done
+        

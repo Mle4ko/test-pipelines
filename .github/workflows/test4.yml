@@ -61,7 +61,7 @@ jobs:
                 exit 1
               else
                 echo -e "\n[INFO]: These functions will be built:\n${functions_to_build[@]}"
-                echo "export build_functions=(${functions_to_build[@]})" >> GITHUB_OUTPUT
+                echo "export build_functions=(${functions_to_build[@]})" >> $GITHUB_OUTPUT
               fi
 
         - name: Build packages

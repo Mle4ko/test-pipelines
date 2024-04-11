@@ -61,7 +61,7 @@ jobs:
                 exit 1
               else
                 echo -e "\n[INFO]: These functions will be built:\n${functions_to_build[@]}"
-                echo "export build_functions=(${functions_to_build[@]})" >> $GITHUB_OUTPUT
+                echo "build_functions=(${functions_to_build[@]})" >> $GITHUB_OUTPUT
               fi
 
         - name: Build packages
@@ -72,6 +72,9 @@ jobs:
               set -e
               echo "INFO: BUILD_FUNCTIONS: ${BUILD_FUNCTIONS[@]}"
               echo "INFO: BUILD_FUNCTIONS: ${{ env.BUILD_FUNCTIONS }}"
+              echo "INFO: ${{ steps.list-functions.outputs.build_functions }}"
+              echo "INFO: ${{ steps.list-functions.outputs.* }}"
+              echo "INFO: $build_functions"
 
               echo -e "\n[INFO]: Building function packages..."
               for func in ${BUILD_FUNCTIONS[@]}; do

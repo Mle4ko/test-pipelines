@@ -15,18 +15,19 @@ jobs:
     steps:
       - name: set inputs as variables
         run: |
-          echo -e "rs-create-watcher=$(echo $JSON_INPUT | jq ".rs-create-watcher")" >> $GITHUB_ENV
-          echo -e "ms-notification-decode=$(echo $JSON_INPUT | jq ".ms-notification-decode")" >> $GITHUB_ENV
-          echo -e "rs-receive-notification=$(echo $JSON_INPUT | jq ".rs-receive-notification")" >> $GITHUB_ENV
-          echo -e "location-alert=$(echo $JSON_INPUT | jq ".location-alert")" >> $GITHUB_ENV
-          echo -e "gsync=$(echo $JSON_INPUT | jq ".gsync")" >> $GITHUB_ENV
-          echo -e "rs-insights-bookings=$(echo $JSON_INPUT | jq ".rs-insights-bookings")" >> $GITHUB_ENV
-          echo -e "rs-insights-daily=$(echo $JSON_INPUT | jq ".rs-insights-daily")" >> $GITHUB_ENV
-          echo -e "rs-insights-iot=$(echo $JSON_INPUT | jq ".rs-insights-iot")" >> $GITHUB_ENV
-          echo -e "rs-handle-visitor-update-meeting-booking-change=$(echo $JSON_INPUT | jq ".rs-handle-visitor-update-meeting-booking-change")" >> $GITHUB_ENV
-          echo -e "rs-send-visit-detail-emails=$(echo $JSON_INPUT | jq ".rs-send-visit-detail-emails")" >> $GITHUB_ENV
-          echo -e "rs-sync-ms-users=$(echo $JSON_INPUT | jq ".rs-sync-ms-users")" >> $GITHUB_ENV
-          echo -e "rs-mapsindoors=$(echo $JSON_INPUT | jq ".rs-mapsindoors")" >> $GITHUB_ENV
+          echo -e "rs-create-watcher=$(echo $JSON_INPUT | jq -r '.["rs-create-watcher"]')" >> $GITHUB_ENV
+          echo -e "ms-notification-decode=$(echo $JSON_INPUT | jq -r '.["ms-notification-decode"]')" >> $GITHUB_ENV
+          echo -e "rs-receive-notification=$(echo $JSON_INPUT | jq -r '.["rs-receive-notification"]')" >> $GITHUB_ENV
+          echo -e "location-alert=$(echo $JSON_INPUT | jq -r '.["location-alert"]')" >> $GITHUB_ENV
+          echo -e "gsync=$(echo $JSON_INPUT | jq -r '.["gsync"]')" >> $GITHUB_ENV
+          echo -e "rs-insights-bookings=$(echo $JSON_INPUT | jq -r '.["rs-insights-bookings"]')" >> $GITHUB_ENV
+          echo -e "rs-insights-daily=$(echo $JSON_INPUT | jq -r '.["rs-insights-daily"]')" >> $GITHUB_ENV
+          echo -e "rs-insights-iot=$(echo $JSON_INPUT | jq -r '.["rs-insights-iot"]')" >> $GITHUB_ENV
+          echo -e "rs-handle-visitor-update-meeting-booking-change=$(echo $JSON_INPUT | jq -r '.["rs-handle-visitor-update-meeting-booking-change"]')" >> $GITHUB_ENV
+          echo -e "rs-send-visit-detail-emails=$(echo $JSON_INPUT | jq -r '.["rs-send-visit-detail-emails"]')" >> $GITHUB_ENV
+          echo -e "rs-sync-ms-users=$(echo $JSON_INPUT | jq -r '.["rs-sync-ms-users"]')" >> $GITHUB_ENV
+          echo -e "rs-mapsindoors=$(echo $JSON_INPUT | jq -r '.["rs-mapsindoors"]')" >> $GITHUB_ENV
+      
       
       - name: Print functions list
         run: |

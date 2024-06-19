@@ -1,0 +1,44 @@
+name: Test more than 10 inputs
+
+on:
+  workflow_dispatch:
+    inputs:
+      functions_to_build:
+        description: Provide JSON object with functions, Example:'{"rs-create-watcher":"true", "ms-notification-decode":"false"}'
+        default: ""
+env:
+  JSON_INPUT: ${{ github.event.inputs.functions_to_build }}
+      
+jobs:
+  lets_go:
+    runs-on: ubuntu-latest
+    steps:
+      - name: set inputs as variables
+        run: |
+          echo -e "rs-create-watcher=$(echo $JSON_INPUT | jq ".rs-create-watcher")" >> $GITHUB_ENV
+          echo -e "ms-notification-decode=$(echo $JSON_INPUT | jq ".ms-notification-decode")" >> $GITHUB_ENV
+          echo -e "rs-receive-notification=$(echo $JSON_INPUT | jq ".rs-receive-notification")" >> $GITHUB_ENV
+          echo -e "location-alert=$(echo $JSON_INPUT | jq ".location-alert")" >> $GITHUB_ENV
+          echo -e "gsync=$(echo $JSON_INPUT | jq ".gsync")" >> $GITHUB_ENV
+          echo -e "rs-insights-bookings=$(echo $JSON_INPUT | jq ".rs-insights-bookings")" >> $GITHUB_ENV
+          echo -e "rs-insights-daily=$(echo $JSON_INPUT | jq ".rs-insights-daily")" >> $GITHUB_ENV
+          echo -e "rs-insights-iot=$(echo $JSON_INPUT | jq ".rs-insights-iot")" >> $GITHUB_ENV
+          echo -e "rs-handle-visitor-update-meeting-booking-change=$(echo $JSON_INPUT | jq ".rs-handle-visitor-update-meeting-booking-change")" >> $GITHUB_ENV
+          echo -e "rs-send-visit-detail-emails=$(echo $JSON_INPUT | jq ".rs-send-visit-detail-emails")" >> $GITHUB_ENV
+          echo -e "rs-sync-ms-users=$(echo $JSON_INPUT | jq ".rs-sync-ms-users")" >> $GITHUB_ENV
+          echo -e "rs-mapsindoors=$(echo $JSON_INPUT | jq ".rs-mapsindoors")" >> $GITHUB_ENV
+      
+      - name: Print functions list
+        run: |
+          echo "rs-create-watcher= ${{ env.rs-create-watcher }}"
+          echo "ms-notification-decode= ${{ env.ms-notification-decode }}"
+          echo "rs-receive-notification= ${{ env.rs-receive-notification }}"
+          echo "location-alert= ${{ env.location-alert }}"
+          echo "gsync= ${{ env.gsync }}"
+          echo "rs-insights-bookings= ${{ env.rs-insights-bookings }}"
+          echo "rs-insights-daily= ${{ env.rs-insights-daily }}"
+          echo "rs-insights-iot= ${{ env.rs-insights-iot }}"
+          echo "rs-handle-visitor-update-meeting-booking-change= ${{ env.rs-handle-visitor-update-meeting-booking-change }}"
+          echo "rs-send-visit-detail-emails= ${{ env.rs-send-visit-detail-emails }}"
+          echo "rs-sync-ms-users= ${{ env.rs-sync-ms-users }}"
+          echo "rs-mapsindoors= ${{ env.rs-mapsindoors }}"

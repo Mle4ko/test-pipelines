@@ -1,7 +1,10 @@
 name: Limit pipeline on PR approval
 
 on:
-  workflow_dispatch:
+    workflow_dispatch:
+    push:
+      branches:
+        - test
 
 jobs:
   lets_go:

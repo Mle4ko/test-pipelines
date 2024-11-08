@@ -28,16 +28,16 @@ jobs:
           reviews=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
             "https://api.github.com/repos/${{ github.repository }}/pulls/$pr_number/reviews")
 
-          # Check if the API returned valid JSON
-          if echo "$reviews" | jq empty 2>/dev/null; then
-            # Process JSON if valid
-            approval_count=$(echo "$reviews" | jq '[.[] | select(.state == "APPROVED")] | length')
-            if [ "$approval_count" -eq 0 ]; then
-              echo "PR is not approved. Skipping the pipeline."
-              exit 1
-            fi
-          else
-            echo "Invalid API response or no reviews found. Skipping the pipeline."
+          # Ensure the API returned valid JSON with reviews data
+          if ! echo "$reviews" | jq -e 'type == "array"' >/dev/null 2>&1; then
+            echo "Invalid API response or no reviews found. Exiting."
+            exit 1
+          fi
+
+          # Count the approved reviews
+          approval_count=$(echo "$reviews" | jq '[.[] | select(.state == "APPROVED")] | length')
+          if [ "$approval_count" -eq 0 ]; then
+            echo "PR is not approved. Skipping the pipeline."
             exit 1
           fi
 

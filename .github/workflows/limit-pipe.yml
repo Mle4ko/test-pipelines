@@ -30,6 +30,13 @@ jobs:
             exit 1
           fi
 
+          # Count the approved reviews
+          approval_count=$(echo "$reviews" | jq '[.[] | select(.state == "APPROVED")] | length')
+          if [ "$approval_count" -eq 0 ]; then
+            echo "PR is not approved. Skipping the pipeline."
+            exit 1
+          fi
+
       - name: Test
         run: |
           echo "Running pipeline...."

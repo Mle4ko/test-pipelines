@@ -11,24 +11,30 @@ jobs:
 
       - name: Install jq
         run: sudo apt-get install -y jq
-      
+
       - name: Check PR approval status
         id: approval_check
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Get the PR number associated with the branch
           pr_number=$(gh pr list --head "$GITHUB_REF_NAME" --json number | jq '.[0].number')
           if [ -z "$pr_number" ]; then
             echo "No open PR found for this branch. Exiting."
             exit 1
           fi
+
+          # Fetch reviews for the PR and check for approval
+          reviews=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/$pr_number/reviews")
           
-          approval_count=$(gh pr reviews "$pr_number" | grep -c "APPROVED")
+          approval_count=$(echo "$reviews" | jq '[.[] | select(.state == "APPROVED")] | length')
           if [ "$approval_count" -eq 0 ]; then
             echo "PR is not approved. Skipping the pipeline."
             exit 1
           fi
 
       - name: Test
+        if: success()
         run: |
           echo "Running pipeline...."

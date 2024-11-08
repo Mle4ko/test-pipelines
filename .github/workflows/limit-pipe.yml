@@ -26,7 +26,7 @@ jobs:
 
           # Ensure the API returned valid JSON with reviews data
           if ! echo "$reviews" | jq -e 'type == "array"' >/dev/null 2>&1; then
-            echo "No reviews found. Exiting."
+            echo "No open PR found for this branch. Exiting."
             exit 1
           fi
 

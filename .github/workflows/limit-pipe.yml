@@ -1,0 +1,17 @@
+name: Limit pipeline on PR approval
+
+on:
+    workflow_dispatch:
+    push:
+      branches:
+        - test
+
+jobs:
+  lets_go:
+    if: github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v4
+        - name: Test
+          run: |
+            echo "Running pipeline...."

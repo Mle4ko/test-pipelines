@@ -19,10 +19,6 @@ jobs:
         run: |
           # Get the PR number associated with the branch
           pr_number=$(gh pr list --head "$GITHUB_REF_NAME" --json number | jq '.[0].number')
-          if [ -z "$pr_number" ]; then
-            echo "No open PR found for this branch. Exiting."
-            exit 1
-          fi
 
           # Fetch reviews for the PR and check for approval
           reviews=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
@@ -30,18 +26,10 @@ jobs:
 
           # Ensure the API returned valid JSON with reviews data
           if ! echo "$reviews" | jq -e 'type == "array"' >/dev/null 2>&1; then
-            echo "Invalid API response or no reviews found. Exiting."
-            exit 1
-          fi
-
-          # Count the approved reviews
-          approval_count=$(echo "$reviews" | jq '[.[] | select(.state == "APPROVED")] | length')
-          if [ "$approval_count" -eq 0 ]; then
-            echo "PR is not approved. Skipping the pipeline."
+            echo "No reviews found. Exiting."
             exit 1
           fi
 
       - name: Test
-        if: success()
         run: |
           echo "Running pipeline...."

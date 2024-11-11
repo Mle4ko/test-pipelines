@@ -11,7 +11,7 @@ jobs:
 
       - uses: trstringer/manual-approval@v1
         with:
-          secret: ${{ github.TOKEN }}
+          secret: ${{ secrets.GITHUB_TOKEN }}
           approvers: nem-addimitrov,nem-vatanasov,Mle4ko
           minimum-approvals: 1
           issue-title: "Deployment to RC"

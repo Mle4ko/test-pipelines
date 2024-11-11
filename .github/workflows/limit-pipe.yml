@@ -31,8 +31,7 @@ jobs:
             const pr = response.data.find(pr => pr.base.ref === 'main');
             if (!pr || pr.state !== 'open') {
               core.exportVariable('pr_exists', false);
-              core.exportVariable('pr_approved', false);
-              return { pr_exists: false, pr_approved: false };
+              return { pr_exists: false };
             }
             
             const reviews = await github.rest.pulls.listReviews({
@@ -52,7 +51,7 @@ jobs:
           result-encoding: string
 
       - uses: trstringer/manual-approval@v1
-        if: ${{ env.pr_exists == 'false' && env.pr_approved == 'false' }}
+        if: ${{ env.pr_exists == 'false' }}
         with:
           secret: ${{ secrets.GITHUB_TOKEN }}
           approvers: nem-addimitrov,nem-vatanasov,Mle4ko

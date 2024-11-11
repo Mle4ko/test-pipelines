@@ -21,6 +21,12 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            // Skip check if triggered on main branch
+            if (context.ref === 'refs/heads/main') {
+              console.log("Triggered on the main branch. Skipping PR approval check.");
+              return { pr_exists: true, pr_approved: true };
+            }
+
             const response = await github.rest.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,

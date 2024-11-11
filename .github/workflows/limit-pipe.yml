@@ -15,28 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: nem-addimitrov,nem-vatanasov,Mle4ko
-          minimum-approvals: 1
-          issue-title: "Deployment to RC"
-          issue-body: "Please approve or deny the deployment"
-          exclude-workflow-initiator-as-approver: false
-          additional-approved-words: ''
-          additional-denied-words: ''
-
       - name: Check for Open PR to Main
         id: pr-check
         uses: actions/github-script@v7
         with:
           script: |
-            // Skip check if triggered on main branch
-            if (context.ref === 'refs/heads/main') {
-              console.log("Triggered on the main branch. Skipping PR approval check.");
-              return { pr_exists: true, pr_approved: true };
-            }
-
             const response = await github.rest.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -46,8 +29,9 @@ jobs:
             
             const pr = response.data.find(pr => pr.base.ref === 'main');
             if (!pr || pr.state !== 'open') {
-              core.setFailed("No open PR found for this branch to 'main'. Exiting.");
-              return;
+              core.exportVariable('pr_exists', false);
+              core.exportVariable('pr_approved', false);
+              return { pr_exists: false, pr_approved: false };
             }
             
             const reviews = await github.rest.pulls.listReviews({
@@ -65,6 +49,18 @@ jobs:
             
             return { pr_exists: true, pr_approved: true };
           result-encoding: string
+
+      - uses: trstringer/manual-approval@v1
+        if: ${{ env.pr_exists == 'false' && env.pr_approved == 'false' }}
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: nem-addimitrov,nem-vatanasov,Mle4ko
+          minimum-approvals: 1
+          issue-title: "Deployment to RC"
+          issue-body: "Please approve or deny the deployment"
+          exclude-workflow-initiator-as-approver: false
+          additional-approved-words: ''
+          additional-denied-words: ''
 
       - name: Test
         run: |

@@ -22,7 +22,7 @@ jobs:
             });
             const pr = response.data.find(pr => pr.base.ref === 'main');
             if (!pr || pr.state !== 'open') {
-              return { pr_exists: false };
+              throw new Error("No open PR found for this branch to 'main'. Exiting.");
             }
             const reviews = await github.rest.pulls.listReviews({
               owner: context.repo.owner,

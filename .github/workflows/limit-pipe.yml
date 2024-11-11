@@ -64,4 +64,4 @@ jobs:
 
       - name: Test
         run: |
-          echo "Running pipeline...."
+          echo "Running pipeline..."

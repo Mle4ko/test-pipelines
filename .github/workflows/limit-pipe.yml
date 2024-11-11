@@ -51,7 +51,7 @@ jobs:
           result-encoding: string
 
       - uses: trstringer/manual-approval@v1
-        if: ${{ env.pr_exists == 'false' }}
+        if: ${{ env.pr_exists == 'false' || github.ref != 'refs/heads/main' }}
         with:
           secret: ${{ secrets.GITHUB_TOKEN }}
           approvers: nem-addimitrov,nem-vatanasov,Mle4ko

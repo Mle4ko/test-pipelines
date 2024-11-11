@@ -9,12 +9,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # - name: Generate token
-      #   id: generate_token
-      #   uses: tibdex/github-app-token@v1
-      #   with:
-      #     app_id: ${{ secrets.APP_ID }}
-      #     private_key: ${{ secrets.APP_PRIVATE_KEY }}
+      - uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: user1,user2,org-team1
+          minimum-approvals: 1
+          issue-title: "Deployment to RC"
+          issue-body: "Please approve or deny the deployment"
+          exclude-workflow-initiator-as-approver: false
+          additional-approved-words: ''
+          additional-denied-words: ''
 
       - name: Check for Open PR to Main
         id: pr-check
@@ -55,13 +59,6 @@ jobs:
             
             return { pr_exists: true, pr_approved: true };
           result-encoding: string
-
-      # - name: Wait for approval
-      #   uses: trstringer/manual-approval@v1
-      #   with:
-      #     secret: ${{ steps.generate_token.outputs.token }}
-      #     approvers: myteam
-      #     minimum-approvals: 1
 
       - name: Test
         run: |

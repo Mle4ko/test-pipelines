@@ -1,17 +1,67 @@
 name: Limit pipeline on PR approval
 
 on:
-    workflow_dispatch:
-    push:
-      branches:
-        - test
+  workflow_dispatch:
 
 jobs:
   lets_go:
-    if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      actions: 'write'
+      id-token: 'write'
+      pull-requests: 'write'
+      issues: 'write'
     steps:
-        - uses: actions/checkout@v4
-        - name: Test
-          run: |
-            echo "Running pipeline...."
+      - uses: actions/checkout@v4
+
+      - name: Check for Open PR to Main
+        if: ${{ github.ref != 'refs/heads/main' }}
+        id: pr-check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const response = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              head: context.repo.owner + ':' + context.ref.replace('refs/heads/', '')
+            });
+            
+            const pr = response.data.find(pr => pr.base.ref === 'main');
+            if (!pr || pr.state !== 'open') {
+              core.exportVariable('pr_exists', false);
+              return { pr_exists: false };
+            }
+            
+            const reviews = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+            });
+            
+            // Filter for approved reviews and make sure there is at least one
+            const approvals = reviews.data.filter(review => review.state === 'APPROVED');
+            if (approvals.length === 0) {
+              core.setFailed("The PR is not approved. At least one approval is required.");
+              return;
+            }
+            
+            return { pr_exists: true, pr_approved: true };
+          result-encoding: string
+
+      - uses: trstringer/manual-approval@v1
+        if: ${{ env.pr_exists == 'false' }}
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: nem-addimitrov,nem-vatanasov,Mle4ko
+          minimum-approvals: 1
+          issue-title: "Deployment to RC"
+          issue-body: "Please approve or deny the deployment"
+          exclude-workflow-initiator-as-approver: false
+          additional-approved-words: ''
+          additional-denied-words: ''
+
+      - name: Test
+        run: |
+          echo "Running pipeline...."

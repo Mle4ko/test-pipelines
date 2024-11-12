@@ -30,8 +30,8 @@ jobs:
             
             const pr = response.data.find(pr => pr.base.ref === 'main');
             if (!pr || pr.state !== 'open') {
-              core.exportVariable('pr_exists', false);
-              return { pr_exists: false };
+              core.setFailed("No open PR found for this branch to 'main'. Exiting.");
+              return;
             }
             
             const reviews = await github.rest.pulls.listReviews({
@@ -50,17 +50,17 @@ jobs:
             return { pr_exists: true, pr_approved: true };
           result-encoding: string
 
-      - uses: trstringer/manual-approval@v1
-        if: ${{ env.pr_exists == 'false' }}
-        with:
-          secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: nem-addimitrov,nem-vatanasov,Mle4ko
-          minimum-approvals: 1
-          issue-title: "Deployment to RC"
-          issue-body: "Please approve or deny the deployment"
-          exclude-workflow-initiator-as-approver: false
-          additional-approved-words: ''
-          additional-denied-words: ''
+      # - uses: trstringer/manual-approval@v1
+      #   if: ${{ env.pr_exists == 'false' }}
+      #   with:
+      #     secret: ${{ secrets.GITHUB_TOKEN }}
+      #     approvers: nem-addimitrov,nem-vatanasov,Mle4ko
+      #     minimum-approvals: 1
+      #     issue-title: "Deployment to RC"
+      #     issue-body: "Please approve or deny the deployment"
+      #     exclude-workflow-initiator-as-approver: false
+      #     additional-approved-words: ''
+      #     additional-denied-words: ''
 
       - name: Test
         run: |

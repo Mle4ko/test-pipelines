@@ -47,8 +47,8 @@ jobs:
               return;
             }
             
-            return { pr_exists: true, pr_approved: true };
-          result-encoding: string
+          #   return { pr_exists: true, pr_approved: true };
+          # result-encoding: string
 
       # - uses: trstringer/manual-approval@v1
       #   if: ${{ env.pr_exists == 'false' }}

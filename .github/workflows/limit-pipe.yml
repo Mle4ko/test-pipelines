@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  lets_go:
+  check-PR:
     runs-on: ubuntu-latest
     permissions:
       contents: 'read'
@@ -61,7 +61,16 @@ jobs:
       #     exclude-workflow-initiator-as-approver: false
       #     additional-approved-words: ''
       #     additional-denied-words: ''
-
+  lets_go:
+    needs: check-PR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      actions: 'write'
+      id-token: 'write'
+      pull-requests: 'write'
+      issues: 'write'
+    steps:
       - name: Test
         run: |
           echo "Running pipeline...."

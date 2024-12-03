@@ -17,6 +17,10 @@ on:
           options:
             - 'Deploy'
             - 'Destroy'
+        publish:
+            required: true
+            type: boolean
+            
 
 jobs:
   get-inputs:
@@ -41,5 +45,10 @@ jobs:
             if: env.ACTION == 'Destroy'
             run: |
               echo "Action is DESTROY!"
+          - name: Show PUBLISH
+            if: ${{ inputs.publish }} == true
+            run: |
+              echo "Action is PUBLISH!"
+              
             
         

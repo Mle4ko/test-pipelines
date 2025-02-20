@@ -46,7 +46,7 @@ jobs:
             run: |
               echo "Action is DESTROY!"
           - name: Show PUBLISH
-            if: ${{ inputs.publish == true }}
+            if: ${{ inputs.publish }}
             run: |
               echo "Action is PUBLISH!"
               

@@ -1,0 +1,46 @@
+name: matrix-jobs-test
+
+env:
+  # Environment independent vars
+  SERVICES_TO_BUILD: ${{ vars.SERVICES_TO_BUILD }}
+  SERVICE_CONFIG: ${{ secrets.SERVICES_TO_BUILD }}
+
+
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [prod-eu, prod-au, prod-us]
+    environment: ${{ matrix.environment }}
+    permissions:
+      contents: 'read'
+      actions: 'write'
+      id-token: 'write'
+      pull-requests: 'write'
+    env:
+      REGION: ${{ vars.REGION }}
+      DATABASE: ${{ secrets.REGION }}
+      SERVICE_URL: ${{ vars.SERVICE_URL }}
+      
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        
+      - name: Check vars from envs
+        run: |
+          echo -e "INFO: THESE ARE THE ENVIRONEMT SPECIFIC VARS:\n"
+          echo "${REGION}"
+          echo "${DATABASE}"
+          echo "${SERVICE_URL}"
+          echo -e "\nINFO: THESE ARE THE ENVIRONEMT INDEPENDENT VARS:\n"
+          echo "${SERVICES_TO_BUILD}"
+          echo "${SERVICE_CONFIG}"

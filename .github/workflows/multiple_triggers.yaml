@@ -20,9 +20,9 @@ on:
             options:
               - 'dev'
               - 'test'
-  # push:
-  #   branches:
-  #     -main
+  push:
+    branches:
+      -main
 
 jobs:
   deploy-terraform:

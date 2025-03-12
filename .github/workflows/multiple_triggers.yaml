@@ -22,7 +22,7 @@ on:
               - 'test'
   push:
     branches:
-      -main
+      - main
 
 jobs:
   deploy-terraform:

@@ -1,0 +1,41 @@
+name: deploy-terraform
+
+run-name: deploy-terraform-${{ github.event.inputs.environment }} by @${{ github.actor }}
+env:
+  TERRAFORM_VERSION: 1.11.1
+  TF_IN_AUTOMATION: true
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+            description: 'Select environment to deploy to:'
+            required: true
+            type: choice
+            default: 'dev'
+            options:
+              - 'dev'
+              - 'test'
+  # push:
+  #   branches:
+  #     -main
+
+jobs:
+  deploy-terraform:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'dev' }}
+    permissions:
+      contents: 'read'
+      actions: 'write'
+      id-token: 'write'
+    env:
+      ENVIRONMENT: ${{ vars.DEPLOY_TYPE }}
+
+    steps:
+      - name: Check env selection
+        run: |
+          echo -e "\n[INFO]: Pipeline was triggered by: ${ENVIRONMENT}\n"

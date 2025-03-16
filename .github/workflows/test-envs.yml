@@ -1,6 +1,6 @@
 env:
     TEST: ${{ secrets.SECRET }}
-    TEST2: "https://mystringwithsecretthisone${{ env.TEST }}"
+    TEST2: "https://mystringwithsecretthisone ${{ vars.RC_DIR }}" ### CAN ONLY REFERENCE environment or vars/secrets!
 
 defaults:
     run:

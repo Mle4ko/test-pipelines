@@ -1,6 +1,6 @@
 env:
     TEST: ${{ secrets.SECRET }}
-    TEST2: "https://mystringwithsecretthisone${TEST}"
+    TEST2: "https://mystringwithsecretthisone${{ env.TEST }}"
 
 defaults:
     run:

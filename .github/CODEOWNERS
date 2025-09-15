@@ -17,5 +17,5 @@
 
 # In this example, @nem-addimitrov and @nem-vatanasov own any file in an terraform and
 # .github directory anywhere in your repository.
-/terraform/ @nem-addimitrov 
-/.github/workflows/ @nem-addimitrov
+terraform/ @nem-addimitrov 
+.github/workflows/ @nem-addimitrov

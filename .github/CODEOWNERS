@@ -1,0 +1,21 @@
+# This is a comment.
+# Each line is a file pattern followed by one or more owners.
+
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# @global-owner1 and @global-owner2 will be requested for
+# review when someone opens a pull request.
+*       @nem-addimitrov 
+
+# Order is important; the last matching pattern takes the most
+# precedence. When someone opens a pull request that only
+# modifies YAML(Pipelines), HCL(Terragrunt), and TF(Terraform) files, 
+# only @nem-addimitrov and not the global owner(s) will be requested for a review.
+*.yml  @nem-addimitrov
+*.hcl  @nem-addimitrov
+*.tf   @nem-addimitrov
+
+# In this example, @nem-addimitrov and @nem-vatanasov own any file in an terraform and
+# .github directory anywhere in your repository.
+/terraform/ @nem-addimitrov 
+/.github/workflows/ @nem-addimitrov

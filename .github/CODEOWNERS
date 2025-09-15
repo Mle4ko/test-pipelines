@@ -12,7 +12,7 @@
 # only @nem-addimitrov and not the global owner(s) will be requested for a review.
 *.yml  @nem-vatanasov
 *.hcl  @nem-vatanasov
-*.tf   @nem-vatanasov
+*.tf*   @nem-vatanasov
 
 # In this example, @nem-addimitrov and @nem-vatanasov own any file in an terraform and
 # .github directory anywhere in your repository.

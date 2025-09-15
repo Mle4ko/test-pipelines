@@ -19,3 +19,4 @@
 # .github directory anywhere in your repository.
 terraform/ @nem-addimitrov 
 .github/workflows/ @nem-addimitrov
+

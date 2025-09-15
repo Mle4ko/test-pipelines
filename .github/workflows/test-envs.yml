@@ -19,6 +19,8 @@ on:
             - 'rc3'
             - 'rc4'
 
+            
+
 jobs:
   deploy:
         name: Deploy to ${{ github.event.inputs.environment }} environment
